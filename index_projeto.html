@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, , maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020305">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <title>JDP SUPREME - DONY BURGUERS</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --jdp-gold: #f59e0b;
+            --jdp-gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --jdp-bg: #020305;
+            --jdp-glass: rgba(20, 22, 28, 0.95);
+            --carbon: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        }
+
+        body { 
+            background: var(--jdp-bg); 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 90px 15px 120px 15px; 
+            overflow-x: hidden; 
+        }
+
+        /* CARREGAMENTO SUPREME */
+        #loading-supreme {
+            position: fixed; inset: 0; background: var(--jdp-bg);
+            z-index: 9999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+
+        /* EFEITO DO CÍRCULO COLORIDO */
+        .spinner-supreme {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+            border: 5px solid transparent;
+            border-top: 5px solid #22c55e; /* Verde */
+            border-right: 5px solid #eab308; /* Amarelo */
+            border-bottom: 5px solid #3b82f6; /* Azul */
+            border-left: 5px solid #a855f7; /* Lilás */
+            border-radius: 50%;
+            animation: spin-supreme 1s linear infinite;
+        }
+
+        @keyframes spin-supreme {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        .nome-ouro-header {
+            background: var(--jdp-gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3));
+         }
+
+        .header-supreme {
+            position: fixed; top: 0; left: 0; right: 0; height: 75px;
+            background: var(--jdp-glass); backdrop-filter: blur(15px);
+            border-bottom: 2px solid var(--jdp-gold); z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+        }
+
+        .resplendor-ouro {
+            font-size: 45px; font-weight: 900; text-align: center;
+            background: var(--jdp-gold-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+        }
+
+        .grid-vendas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .card-venda {
+            background: var(--jdp-glass); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; overflow: hidden; position: relative;
+        }
+        .card-venda img { width: 100%; height: 120px; object-fit: cover; }
+        .badge-qtd { position: absolute; top: 5px; right: 5px; background: var(--jdp-gold); color: #000; padding: 2px 8px; border-radius: 5px; font-weight: 900; }
+
+        .btn-finalizar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 85%; background: var(--jdp-gold-gradient); color: #000; padding: 20px; border-radius: 12px; font-weight: 900; border: none; z-index: 1100; }
+        
+        #surprise-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        #modal-supreme { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; }
+        
+        .comprovante-ouro { width: 100%; max-width: 340px; background: #0a0a0a var(--carbon); border: 2px solid var(--jdp-gold); padding: 25px; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-supreme">
+        <div class="resplendor-ouro" style="font-size: 24px;">DONY BURGUERS</div>
+        <div style="margin-top: 10px; color: var(--jdp-gold); font-size: 10px; letter-spacing: 2px; animation: pulse 1.5s infinite;">SINCRONIZANDO NAVE...</div>
+        <div class="spinner-supreme"></div>
+    </div>
+
+    <div id="surprise-overlay">
+        <div id="surprise-text" class="resplendor-ouro">DONY-BURGUERS</div>
+    </div>
+
+    <div class="header-supreme">
+        <span class="nome-ouro-header">DONY BURGUERS</span>
+        <div style="text-align: center;">
+            <div style="font-size:9px; color:var(--jdp-gold);">ITENS</div>
+            <div id="mini-qtd" style="font-size:22px; font-weight:900;">00</div>
+        </div>
+        <div style="text-align: right;">
+            <div style="font-size:9px; color:var(--jdp-gold);">TOTAL</div>
+            <div id="mini-total" style="font-size:22px; font-weight:900; color:var(--jdp-gold);">R$ 0,00</div>
+        </div>
+    </div>
+
+    <div class="grid-vendas" id="vitrine"></div>
+
+    <button class="btn-finalizar" onclick="gerarConfirmacao()">
+        <i class="fas fa-check-circle"></i> CONFIRMAR PEDIDO
+    </button>
+
+    <div id="modal-supreme">
+        <div class="comprovante-ouro" id="print-area">
+            <h2 style="color:var(--jdp-gold); text-align:center;">DONY BURGUERS</h2>
+            <div id="comp-itens-list"></div>
+            <hr style="border:1px solid var(--jdp-gold)">
+            <div style="display:flex; justify-content:space-between; color:var(--jdp-gold); font-weight:900;">
+                <span>TOTAL</span>
+                <span id="comp-total"></span>
+            </div>
+            <div style="text-align:center; margin-top:20px;">
+                <img id="img-motor-comprovante" src="" style="width:70px; height:70px;">
+                <div id="txt-evangelico" style="font-size:10px; color:#bf953f; margin-top:10px;"></div>
+            </div>
+        </div>
+        <button onclick="ativarProtocoloOuro()" style="width:340px; background:#25D366; color:#fff; padding:15px; border:none; margin-top:10px; font-weight:900;">ENVIAR WHATSAPP</button>
+        <button onclick="fecharModal()" style="background:none; color:#555; border:none; margin-top:10px;">CANCELAR</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+    apiKey: "VALOR_PROTEGIDO_POR_JOSE_DIVINO_PRADO_DA_LAPA", 
+    authDomain: "dony-burguers.firebaseapp.com",
+            databaseURL: "https://dony-burguers-default-rtdb.firebaseio.com",
+            projectId: "dony-burguers",
+            storageBucket: "dony-burguers.firebasestorage.app",
+            messagingSenderId: "511509845142",
+            appId: "1:511509845142:web:9b0254a09ad8051e039eb7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let carrinho = [];
+        let produtosGlobais = [];
+        let audioSurpresaUrl = "";
+        const frases = ["O SENHOR É MEU PASTOR.", "TUDO POSSO EM DEUS.", "DEUS É FIEL."];
+
+        window.onload = () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(() => console.log("Nave pronta!"));
+            }
+
+            db.ref('cardapio_supreme').on('value', snap => {
+                const data = snap.val();
+                produtosGlobais = data ? Object.entries(data).map(([id, val]) => ({id, ...val})) : [];
+                renderizar();
+                // INÍCIO APÓS 10 SEGUNDOS (10000 ms)
+                setTimeout(() => {
+                    document.getElementById('loading-supreme').style.display = 'none';
+                }, 10000); 
+            });
+
+            db.ref('config_motor_recibo').on('value', snap => { document.getElementById('img-motor-comprovante').src = snap.val() || ""; });
+            db.ref('config_audio_surpresa').on('value', snap => { audioSurpresaUrl = snap.val() || ""; });
+        };
+
+        function renderizar() {
+            const vitrine = document.getElementById('vitrine');
+            let total = 0, itens = 0;
+            carrinho.forEach(c => { total += (c.preco * c.qtd); itens += c.qtd; });
+            document.getElementById('mini-total').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('mini-qtd').innerText = itens.toString().padStart(2, '0');
+
+            vitrine.innerHTML = produtosGlobais.map((p, i) => {
+                const item = carrinho.find(c => c.nome === p.nome);
+                const qtd = item ? item.qtd : 0;
+                return `
+                    <div class="card-venda" onclick="addCarrinho(${i})">
+                        ${qtd > 0 ? `<div class="badge-qtd">${qtd}</div>` : ''}
+                        <img src="${p.link}">
+                        <div style="padding:10px; text-align:center;">
+                            <div style="font-size:11px; color:#888">${p.nome}</div>
+                            <div style="font-weight:900">R$ ${parseFloat(p.preco).toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addCarrinho(i) {
+            const p = produtosGlobais[i];
+            const item = carrinho.find(c => c.nome === p.nome);
+            if (item) item.qtd++; else carrinho.push({ ...p, qtd: 1 });
+            renderizar();
+        }
+
+        function gerarConfirmacao() {
+            if (carrinho.length === 0) return alert("CARRINHO VAZIO");
+            document.getElementById('txt-evangelico').innerText = frases[Math.floor(Math.random() * frases.length)];
+            const list = document.getElementById('comp-itens-list');
+            let total = 0;
+            list.innerHTML = carrinho.map(i => {
+                total += (i.qtd * i.preco);
+                return `<div style="display:flex; justify-content:space-between; color:#fff; font-size:13px; margin-bottom:5px;"><span>${i.qtd}x ${i.nome}</span><span>R$ ${(i.qtd*i.preco).toFixed(2)}</span></div>`;
+            }).join('');
+            document.getElementById('comp-total').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('modal-supreme').style.display = 'flex';
+        }
+
+        async function ativarProtocoloOuro() {
+            const overlay = document.getElementById('surprise-overlay');
+            overlay.style.display = 'flex';
+            if (navigator.vibrate) navigator.vibrate([400, 100, 400]);
+            if (audioSurpresaUrl) { new Audio(audioSurpresaUrl).play(); }
+            setTimeout(() => { overlay.style.display = 'none'; processarSaida(); }, 3000);
+        }
+
+        async function processarSaida() {
+            const alvo = document.getElementById('print-area');
+            const canvas = await html2canvas(alvo, { backgroundColor: "#000" });
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL("image/png");
+            link.download = `DONY_PEDIDO.png`;
+            link.click();
+            let msg = `*🔥 NOVO PEDIDO - DONY BURGUERS*\n\n`;
+            carrinho.forEach(i => { msg += `✅ ${i.qtd}x ${i.nome}\n`; });
+            msg += `\n*TOTAL: R$ ${document.getElementById('comp-total').innerText}*`;
+            window.location.href = `https://wa.me/5592984846058?text=${encodeURIComponent(msg)}`;
+        }
+
+        function fecharModal() { document.getElementById('modal-supreme').style.display = 'none'; }
+    </script>
+</body>
+</html>

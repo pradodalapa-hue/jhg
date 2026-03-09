@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DONY BURGUER'S SUPREME - DASHBOARD</title>
+    <style>
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .header { border-left: 5px solid #f59e0b; padding-left: 15px; margin-bottom: 30px; }
+        .header h1 { color: #f59e0b; margin: 0; font-size: 24px; text-transform: uppercase; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: #111; border: 1px solid #222; padding: 20px; border-radius: 10px; text-align: center; transition: 0.3s; }
+        .card:hover { border-color: #f59e0b; transform: translateY(-5px); }
+        .card h3 { color: #f59e0b; margin-top: 0; }
+        .card .valor { font-size: 32px; font-weight: bold; margin: 10px 0; }
+        .status-badge { background: #065f46; color: #34d399; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #444; border-top: 1px solid #222; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Painel de Controle JDP</h1>
+        <p>Sistema Operacional HELENA - Status: <span class="status-badge">NÚCLEO ONLINE</span></p>
+    </div>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Vendas Hoje</h3>
+            <div class="valor">R$ 1.250,00</div>
+            <p>Dony Burguer's ICE</p>
+        </div>
+
+        <div class="card">
+            <h3>Pedidos Ativos</h3>
+            <div class="valor">14</div>
+            <p>Em linha de produção</p>
+        </div>
+
+        <div class="card">
+            <h3>Segurança PWA</h3>
+            <div class="valor">100%</div>
+            <p>Blindagem de Camada 7</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        PROPRIEDADE EXCLUSIVA: JOSÉ DIVINO PRADO DA LAPA<br>
+        TECNOLOGIA SOBERANA - SEM DEPENDÊNCIA DE TERCEIROS
+    </div>
+
+</body>
+</html>
+
